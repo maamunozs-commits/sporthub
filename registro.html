@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro — SportHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<div class="auth-bg">
+  <div class="container d-flex align-items-center justify-content-center py-5" style="position:relative;z-index:1">
+    <div class="row w-100 justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+        <div class="mb-4 text-center">
+          <a href="index.html" class="text-decoration-none">
+            <div class="auth-logo-text text-white">
+              <span class="auth-logo-icon"><i class="bi bi-trophy-fill"></i></span>
+              SportHub
+            </div>
+          </a>
+        </div>
+
+        <div class="auth-panel">
+          <div class="mb-4">
+            <h1 class="fw-bold mb-1" style="font-size:1.4rem">Crear cuenta</h1>
+            <p class="text-muted mb-0" style="font-size:.875rem">Completa el formulario para registrarte</p>
+          </div>
+
+          <div id="alert-box" class="mb-3"></div>
+
+          <form id="form-registro" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="nombre">Nombre completo <span class="text-danger">*</span></label>
+              <input type="text" id="nombre" class="form-control" placeholder="Tu nombre completo" autocomplete="name">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="correo">Correo electrónico <span class="text-danger">*</span></label>
+              <input type="email" id="correo" class="form-control" placeholder="tu@correo.com" autocomplete="email">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="telefono">Teléfono <span class="text-danger">*</span></label>
+              <input type="tel" id="telefono" class="form-control" placeholder="987654321" autocomplete="tel">
+              <p class="mt-1 mb-0" style="font-size:.78rem;color:var(--text-muted)">Solo números, sin espacios ni guiones</p>
+            </div>
+
+            <div class="mb-2">
+              <div class="d-flex justify-content-between mb-1">
+                <label class="form-label mb-0" for="password">Contraseña <span class="text-danger">*</span></label>
+              </div>
+              <div class="input-group">
+                <input type="password" id="password" class="form-control" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+                <button type="button" class="btn btn-outline-secondary" style="border:1.5px solid var(--border);border-left:none" onclick="togglePw('password','ico1')">
+                  <i class="bi bi-eye" id="ico1" style="font-size:.85rem"></i>
+                </button>
+              </div>
+              <div id="pw-strength" class="mt-1"></div>
+            </div>
+
+            
+            <div class="mb-3 p-3 rounded-3" style="background:var(--bg);font-size:.78rem;color:var(--text-muted)">
+              <div class="row g-1">
+                <div class="col-6"><i class="bi bi-dot"></i>Mínimo 8 caracteres</div>
+                <div class="col-6"><i class="bi bi-dot"></i>Una mayúscula</div>
+                <div class="col-6"><i class="bi bi-dot"></i>Un número</div>
+                <div class="col-6"><i class="bi bi-dot"></i>Un carácter especial</div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="confirmar-password">Confirmar contraseña <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input type="password" id="confirmar-password" class="form-control" placeholder="Repite tu contraseña" autocomplete="new-password">
+                <button type="button" class="btn btn-outline-secondary" style="border:1.5px solid var(--border);border-left:none" onclick="togglePw('confirmar-password','ico2')">
+                  <i class="bi bi-eye" id="ico2" style="font-size:.85rem"></i>
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-green-sh w-100 py-2">Crear cuenta</button>
+          </form>
+
+          <div class="text-center mt-4" style="font-size:.875rem">
+            <span class="text-muted">¿Ya tienes cuenta?</span>
+            <a href="login.html" style="color:var(--green);font-weight:600;margin-left:.35rem">Inicia sesión</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/canchas.js"></script>
+<script src="assets/js/reservas.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+  initRegistro();
+  function togglePw(inp, ico) {
+    const el = document.getElementById(inp);
+    const ic = document.getElementById(ico);
+    el.type = el.type === 'password' ? 'text' : 'password';
+    ic.className = el.type === 'password' ? 'bi bi-eye' : 'bi bi-eye-slash';
+    ic.style.fontSize = '.85rem';
+  }
+</script>
+</body>
+</html>

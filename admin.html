@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — SportHub Admin</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-sh sticky-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" href="admin.html">
+      <span class="brand-icon"><i class="bi bi-trophy-fill"></i></span>SportHub
+      <span class="ms-2 badge-sh badge-navy" style="font-size:.65rem;font-weight:700">ADMIN</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="color:rgba(255,255,255,.65)">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html" target="_blank">Ver sitio</a></li>
+      </ul>
+      <ul class="navbar-nav align-items-center gap-2" id="nav-user-area"></ul>
+    </div>
+  </div>
+</nav>
+
+<div class="admin-subnav">
+  <div class="container-fluid px-4">
+    <a href="admin.html" class="active"><i class="bi bi-grid-1x2 me-1"></i>Dashboard</a>
+    <a href="admin-canchas.html"><i class="bi bi-building me-1"></i>Canchas</a>
+    <a href="admin-usuarios.html"><i class="bi bi-people me-1"></i>Usuarios</a>
+    <a href="admin-reservas.html"><i class="bi bi-calendar3 me-1"></i>Reservas</a>
+    <a href="admin-horarios.html"><i class="bi bi-clock me-1"></i>Horarios</a>
+  </div>
+</div>
+
+<main class="py-4">
+  <div class="container-fluid px-4">
+
+    <div class="mb-5">
+      <h1 class="fw-bold mb-0" style="font-size:1.4rem">Dashboard</h1>
+      <p class="text-muted mb-0 mt-1" style="font-size:.875rem">Resumen general del sistema</p>
+    </div>
+
+    
+    <div class="row g-3 mb-5">
+      <div class="col-6 col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="kpi-label">Canchas</div>
+            <div class="kpi-icon" style="background:var(--green-50);color:var(--green)">
+              <i class="bi bi-building"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="dash-canchas">—</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="kpi-label">Clientes</div>
+            <div class="kpi-icon" style="background:#EFF6FF;color:var(--blue)">
+              <i class="bi bi-people"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="dash-usuarios">—</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 col-xl">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="kpi-label">Total reservas</div>
+            <div class="kpi-icon" style="background:#F5F3FF;color:#7C3AED">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="dash-reservas">—</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-6 col-xl">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="kpi-label">Reservas hoy</div>
+            <div class="kpi-icon" style="background:#FFF7ED;color:#EA580C">
+              <i class="bi bi-calendar-day"></i>
+            </div>
+          </div>
+          <div class="kpi-value" id="dash-hoy">—</div>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-xl">
+        <div class="kpi-card">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="kpi-label">Ingresos totales</div>
+            <div class="kpi-icon" style="background:var(--green-50);color:var(--green)">
+              <i class="bi bi-cash-stack"></i>
+            </div>
+          </div>
+          <div class="kpi-value" style="font-size:1.35rem" id="dash-ingresos">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+
+      
+      <div class="col-lg-8">
+        <div class="card-sh">
+          <div class="d-flex justify-content-between align-items-center p-4 pb-0">
+            <h5 class="fw-bold mb-0" style="font-size:.95rem">Últimas reservas</h5>
+            <a href="admin-reservas.html" class="btn btn-outline-sh btn-sm" style="font-size:.78rem">Ver todas</a>
+          </div>
+          <div class="table-responsive p-4 pt-3">
+            <table class="table-sh w-100">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Cliente</th>
+                  <th>Cancha</th>
+                  <th>Fecha / Hora</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="dash-reservas-tbody">
+                <tr><td colspan="5" class="text-center py-3" style="color:var(--text-muted)">Cargando…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="col-lg-4 d-flex flex-column gap-4">
+
+        
+        <div class="card-sh p-4">
+          <h5 class="fw-bold mb-4" style="font-size:.95rem">Canchas más reservadas</h5>
+          <div id="dash-popularidad">
+            <p class="text-muted" style="font-size:.875rem">Sin datos</p>
+          </div>
+        </div>
+
+        
+        <div class="card-sh p-4">
+          <h5 class="fw-bold mb-3" style="font-size:.95rem">Acciones rápidas</h5>
+          <div class="d-grid gap-2">
+            <a href="admin-canchas.html" class="btn btn-dark-sh" style="font-size:.875rem">
+              <i class="bi bi-plus me-2"></i>Nueva cancha
+            </a>
+            <a href="admin-horarios.html" class="btn btn-outline-sh" style="font-size:.875rem">
+              <i class="bi bi-clock me-2"></i>Gestionar horarios
+            </a>
+            <a href="admin-reservas.html" class="btn btn-outline-sh" style="font-size:.875rem">
+              <i class="bi bi-calendar3 me-2"></i>Ver reservas
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer mt-4">
+  <div class="container-fluid px-4">
+    <div class="d-flex justify-content-between flex-wrap gap-2">
+      <span style="font-size:.78rem">SportHub Admin</span>
+      <span style="font-size:.78rem">DSY2202 — Semana 3</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/canchas.js"></script>
+<script src="assets/js/reservas.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>document.addEventListener('DOMContentLoaded', initAdmin);</script>
+</body>
+</html>

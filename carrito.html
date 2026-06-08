@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resumen de Reserva — SportHub</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-sh sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <span class="brand-icon"><i class="bi bi-trophy-fill"></i></span>SportHub
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" style="color:rgba(255,255,255,.65)">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="canchas.html">Canchas</a></li>
+      </ul>
+      <ul class="navbar-nav align-items-center gap-2" id="nav-user-area"></ul>
+    </div>
+  </div>
+</nav>
+
+<main class="py-section">
+  <div class="container">
+
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+
+        
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb mb-0" style="font-size:.82rem">
+            <li class="breadcrumb-item"><a href="canchas.html">Canchas</a></li>
+            <li class="breadcrumb-item active">Confirmar reserva</li>
+          </ol>
+        </nav>
+
+        
+        <div class="d-flex align-items-center gap-2 mb-5" style="font-size:.8rem;font-weight:600">
+          <span class="badge-sh badge-green">1 Eligiste cancha</span>
+          <i class="bi bi-chevron-right" style="color:var(--text-light);font-size:.75rem"></i>
+          <span class="badge-sh badge-green">2 Seleccionaste horario</span>
+          <i class="bi bi-chevron-right" style="color:var(--text-light);font-size:.75rem"></i>
+          <span class="badge-sh badge-navy">3 Confirmar y pagar</span>
+        </div>
+
+        <h1 class="fw-bold mb-4" style="font-size:1.4rem;letter-spacing:-.3px">Resumen de reserva</h1>
+
+        <div id="alert-pago" class="mb-3"></div>
+
+        
+        <div id="carrito-vacio" class="d-none text-center py-5 card-sh p-5">
+          <i class="bi bi-bag-x" style="font-size:2.5rem;color:var(--text-light)"></i>
+          <h5 class="mt-3 mb-2 fw-bold">Sin reserva seleccionada</h5>
+          <p class="text-muted mb-4" style="font-size:.875rem">No tienes ninguna reserva en proceso.</p>
+          <a href="canchas.html" class="btn btn-dark-sh">Ver canchas</a>
+        </div>
+
+        
+        <div id="carrito-detalle" class="d-none">
+
+          
+          <div class="card-sh p-4 mb-3">
+            <div class="d-flex align-items-center gap-3 mb-4">
+              <div id="cart-icon" class="sport-badge" style="border-radius:12px;font-size:1.6rem"></div>
+              <div>
+                <h5 class="fw-bold mb-0" style="font-size:.95rem" id="cart-cancha">—</h5>
+                <span class="badge-sh badge-gray mt-1" id="cart-tipo">—</span>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+              <div class="col-6 col-sm-3">
+                <div class="text-center p-3 rounded-3" style="background:var(--bg)">
+                  <i class="bi bi-calendar3" style="color:var(--navy);font-size:1.1rem"></i>
+                  <div style="font-size:.73rem;color:var(--text-muted);margin-top:.25rem">Fecha</div>
+                  <div class="fw-bold" style="font-size:.85rem" id="cart-fecha">—</div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="text-center p-3 rounded-3" style="background:var(--bg)">
+                  <i class="bi bi-clock" style="color:var(--navy);font-size:1.1rem"></i>
+                  <div style="font-size:.73rem;color:var(--text-muted);margin-top:.25rem">Hora</div>
+                  <div class="fw-bold" style="font-size:.85rem" id="cart-hora">—</div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="text-center p-3 rounded-3" style="background:var(--bg)">
+                  <i class="bi bi-hourglass-split" style="color:var(--navy);font-size:1.1rem"></i>
+                  <div style="font-size:.73rem;color:var(--text-muted);margin-top:.25rem">Duración</div>
+                  <div class="fw-bold" style="font-size:.85rem">1 hora</div>
+                </div>
+              </div>
+              <div class="col-6 col-sm-3">
+                <div class="text-center p-3 rounded-3" style="background:var(--green-50);border:1px solid #BBF7D0">
+                  <i class="bi bi-cash-coin" style="color:var(--green);font-size:1.1rem"></i>
+                  <div style="font-size:.73rem;color:var(--text-muted);margin-top:.25rem">Precio</div>
+                  <div class="fw-bold" style="font-size:.85rem;color:var(--green)" id="cart-precio">—</div>
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="p-3 rounded-3" style="background:var(--bg)">
+              <div class="row g-2" style="font-size:.82rem">
+                <div class="col-6">
+                  <div style="color:var(--text-muted);margin-bottom:.15rem">Cliente</div>
+                  <div class="fw-semibold" id="cart-cliente">—</div>
+                </div>
+                <div class="col-6">
+                  <div style="color:var(--text-muted);margin-bottom:.15rem">Correo</div>
+                  <div class="fw-semibold" id="cart-correo">—</div>
+                </div>
+              </div>
+            </div>
+
+            
+            <div class="d-flex justify-content-between align-items-center mt-4 pt-3" style="border-top:1px solid var(--border)">
+              <span class="fw-bold" style="font-size:.875rem">Total a pagar</span>
+              <span class="fw-bold" style="font-size:1.5rem;color:var(--text);letter-spacing:-.5px" id="cart-total">—</span>
+            </div>
+          </div>
+
+          
+          <div class="card-sh p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="fw-bold mb-0" style="font-size:.95rem">Datos de pago</h5>
+              <span class="badge-sh badge-green" style="font-size:.7rem">
+                <i class="bi bi-lock-fill me-1"></i>Pago simulado
+              </span>
+            </div>
+            <div class="alert-info alert rounded-3 mb-3" style="font-size:.8rem">
+              <i class="bi bi-info-circle me-2"></i>
+              Esta es una simulación educativa. No se realizará ningún cobro real.
+            </div>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label">Número de tarjeta</label>
+                <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" oninput="fmtCard(this)">
+              </div>
+              <div class="col-6">
+                <label class="form-label">Vencimiento</label>
+                <input type="text" class="form-control" placeholder="MM/AA" maxlength="5">
+              </div>
+              <div class="col-6">
+                <label class="form-label">CVV</label>
+                <input type="text" class="form-control" placeholder="123" maxlength="3">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Nombre en tarjeta</label>
+                <input type="text" class="form-control" placeholder="Nombre completo">
+              </div>
+            </div>
+          </div>
+
+          
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-green-sh flex-grow-1 py-2" id="btn-pagar" onclick="procesarPago()" disabled>
+              <i class="bi bi-shield-check me-2"></i>Confirmar y pagar
+            </button>
+            <button class="btn btn-outline-sh d-none" id="btn-vaciar" onclick="vaciarCarrito()">
+              <i class="bi bi-x-lg me-1" style="font-size:.8rem"></i>Cancelar
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="d-flex justify-content-between flex-wrap gap-3">
+      <div class="footer-brand">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--green);border-radius:5px;margin-right:.4rem">
+          <i class="bi bi-trophy-fill" style="font-size:.65rem;color:#fff"></i>
+        </span>SportHub
+      </div>
+      <span style="font-size:.78rem">© 2026 SportHub Reservas — DSY2202</span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/canchas.js"></script>
+<script src="assets/js/reservas.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', initCarrito);
+  function fmtCard(el) { el.value = el.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim(); }
+</script>
+</body>
+</html>
