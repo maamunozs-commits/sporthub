@@ -53,12 +53,6 @@ Tambien se pueden registrar nuevos clientes desde la pantalla de registro.
 
 ## Instalacion
 
-Entrar a la carpeta del proyecto:
-
-```bash
-cd sporthub
-```
-
 Instalar dependencias:
 
 ```bash
