@@ -1,0 +1,111 @@
+<div class="container-fluid px-4">
+
+  <div class="mb-5">
+    <h1 class="fw-bold mb-0" style="font-size:1.4rem">Dashboard</h1>
+    <p class="text-muted mb-0 mt-1" style="font-size:.875rem">Resumen general del sistema</p>
+  </div>
+
+  <!-- KPIs -->
+  <div class="row g-3 mb-5">
+    <div class="col-6 col-md-4 col-xl">
+      <div class="kpi-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="kpi-label">Canchas</div>
+          <div class="kpi-icon" style="background:var(--green-50);color:var(--green)"><i class="bi bi-building"></i></div>
+        </div>
+        <div class="kpi-value">{{ kpis.canchas }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl">
+      <div class="kpi-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="kpi-label">Clientes</div>
+          <div class="kpi-icon" style="background:#EFF6FF;color:var(--blue)"><i class="bi bi-people"></i></div>
+        </div>
+        <div class="kpi-value">{{ kpis.clientes }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4 col-xl">
+      <div class="kpi-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="kpi-label">Total reservas</div>
+          <div class="kpi-icon" style="background:#F5F3FF;color:#7C3AED"><i class="bi bi-calendar-check"></i></div>
+        </div>
+        <div class="kpi-value">{{ kpis.reservas }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-6 col-xl">
+      <div class="kpi-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="kpi-label">Reservas hoy</div>
+          <div class="kpi-icon" style="background:#FFF7ED;color:#EA580C"><i class="bi bi-calendar-day"></i></div>
+        </div>
+        <div class="kpi-value">{{ kpis.hoy }}</div>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-xl">
+      <div class="kpi-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div class="kpi-label">Ingresos totales</div>
+          <div class="kpi-icon" style="background:var(--green-50);color:var(--green)"><i class="bi bi-cash-stack"></i></div>
+        </div>
+        <div class="kpi-value" style="font-size:1.35rem">{{ kpis.ingresos | precioClp }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Últimas reservas -->
+    <div class="col-lg-8">
+      <div class="card-sh">
+        <div class="d-flex justify-content-between align-items-center p-4 pb-0">
+          <h5 class="fw-bold mb-0" style="font-size:.95rem">Últimas reservas</h5>
+          <a routerLink="/admin/reservas" class="btn btn-outline-sh btn-sm" style="font-size:.78rem">Ver todas</a>
+        </div>
+        <div class="table-responsive p-4 pt-3">
+          <table class="table-sh w-100">
+            <thead>
+              <tr><th>#</th><th>Cliente</th><th>Cancha</th><th>Fecha / Hora</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr *ngIf="ultimas.length === 0"><td colspan="5" class="text-center text-muted py-3">Sin reservas aún</td></tr>
+              <tr *ngFor="let r of ultimas">
+                <td style="color:var(--text-muted);font-size:.8rem">{{ codigo(r) }}</td>
+                <td class="fw-semibold">{{ r.clienteNombre }}</td>
+                <td>{{ r.canchaNombre }}</td>
+                <td>{{ r.fecha | fechaEs }} <span class="badge-sh badge-gray" style="font-size:.73rem">{{ r.hora }}</span></td>
+                <td><span class="badge-sh" [ngClass]="r.estado === 'confirmada' ? 'badge-green' : 'badge-red'">{{ r.estado }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lateral -->
+    <div class="col-lg-4 d-flex flex-column gap-4">
+      <div class="card-sh p-4">
+        <h5 class="fw-bold mb-4" style="font-size:.95rem">Canchas más reservadas</h5>
+        <div *ngFor="let p of popularidad" class="mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="small fw-semibold">{{ emoji(p.cancha.tipo) }} {{ p.cancha.nombre }}</span>
+            <span class="small text-muted">{{ p.count }} reserva{{ p.count !== 1 ? 's' : '' }}</span>
+          </div>
+          <div class="progress" style="height:8px;border-radius:4px">
+            <div class="progress-bar" [style.width.%]="p.pct" [style.background]="color(p.cancha.tipo)" style="border-radius:4px"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-sh p-4">
+        <h5 class="fw-bold mb-3" style="font-size:.95rem">Acciones rápidas</h5>
+        <div class="d-grid gap-2">
+          <a routerLink="/admin/canchas" class="btn btn-dark-sh" style="font-size:.875rem"><i class="bi bi-plus me-2"></i>Nueva cancha</a>
+          <a routerLink="/admin/horarios" class="btn btn-outline-sh" style="font-size:.875rem"><i class="bi bi-clock me-2"></i>Gestionar horarios</a>
+          <a routerLink="/admin/reservas" class="btn btn-outline-sh" style="font-size:.875rem"><i class="bi bi-calendar3 me-2"></i>Ver reservas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

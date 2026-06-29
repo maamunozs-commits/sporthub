@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg navbar-sh sticky-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand" routerLink="/admin">
+      <span class="brand-icon"><i class="bi bi-trophy-fill"></i></span>SportHub
+      <span class="ms-2 badge-sh badge-navy" style="font-size:.65rem;font-weight:700">ADMIN</span>
+    </a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navMenuAdmin" style="color:rgba(255,255,255,.65)">
+      <i class="bi bi-list fs-4"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenuAdmin">
+      <ul class="navbar-nav me-auto ms-3 gap-1">
+        <li class="nav-item"><a class="nav-link" routerLink="/" target="_blank">Ver sitio</a></li>
+      </ul>
+      <ul class="navbar-nav align-items-center gap-2">
+        <li class="nav-item dropdown" *ngIf="sesion$ | async as s">
+          <a class="nav-link dropdown-toggle fw-semibold d-flex align-items-center gap-1"
+             href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+            <span class="d-none d-sm-inline">{{ s.nombre }}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" routerLink="/perfil"><i class="bi bi-person-gear me-2"></i>Mi perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="#" (click)="cerrarSesion(); $event.preventDefault()">
+              <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="admin-subnav">
+  <div class="container-fluid px-4">
+    <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="bi bi-grid-1x2 me-1"></i>Dashboard</a>
+    <a routerLink="/admin/canchas" routerLinkActive="active"><i class="bi bi-building me-1"></i>Canchas</a>
+    <a routerLink="/admin/usuarios" routerLinkActive="active"><i class="bi bi-people me-1"></i>Usuarios</a>
+    <a routerLink="/admin/reservas" routerLinkActive="active"><i class="bi bi-calendar3 me-1"></i>Reservas</a>
+    <a routerLink="/admin/horarios" routerLinkActive="active"><i class="bi bi-clock me-1"></i>Horarios</a>
+  </div>
+</div>

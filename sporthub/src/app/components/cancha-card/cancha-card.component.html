@@ -1,0 +1,37 @@
+<div class="card-sh card-sh-hover cancha-card d-flex flex-column">
+  <div class="cancha-thumb position-relative" [ngClass]="'th-' + cancha.tipo">
+    <img class="cancha-img" [src]="imagen" [alt]="cancha.nombre">
+    <span class="cancha-type-badge">{{ label }}</span>
+    <span class="sport-emoji">{{ emoji }}</span>
+    <span *ngIf="cancha.estado === 'disponible'"
+          style="position:absolute;top:.75rem;right:.75rem;z-index:2">
+      <span class="status-dot green"></span>
+    </span>
+  </div>
+
+  <div class="p-4 d-flex flex-column flex-grow-1">
+    <h5 class="fw-bold mb-1" style="font-size:.95rem;letter-spacing:-.2px">{{ cancha.nombre }}</h5>
+    <p class="flex-grow-1 mb-3" style="font-size:.82rem;color:var(--text-muted);line-height:1.5">
+      {{ resumen }}
+    </p>
+
+    <div class="cancha-meta d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <span class="cancha-price">{{ cancha.precio | precioClp }}</span>
+        <span class="cancha-price-label"> / hora</span>
+      </div>
+      <span style="font-size:.78rem;color:var(--text-muted)">{{ cancha.capacidad }} personas</span>
+    </div>
+
+    <button class="btn btn-dark-sh w-100" (click)="verDetalle.emit(cancha.id)">Ver detalle</button>
+
+    <ng-container [ngSwitch]="true">
+      <span *ngSwitchCase="cancha.estado !== 'disponible'"
+            class="badge-sh badge-gray w-100 text-center mt-2 py-2">No disponible</span>
+      <button *ngSwitchCase="autenticado && cancha.estado === 'disponible'"
+              class="btn btn-green-sh w-100 mt-2" (click)="reservar.emit(cancha.id)">Reservar</button>
+      <button *ngSwitchDefault class="btn btn-outline-sh w-100 mt-2" style="font-size:.82rem"
+              (click)="verDetalle.emit(cancha.id)">Inicia sesión para reservar</button>
+    </ng-container>
+  </div>
+</div>

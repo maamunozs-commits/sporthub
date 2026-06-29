@@ -1,0 +1,51 @@
+<footer class="footer">
+  <div class="container">
+
+    <ng-container *ngIf="variant === 'full'; else mini">
+      <div class="row g-4 mb-4">
+        <div class="col-md-4">
+          <div class="footer-brand mb-2">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--green);border-radius:5px;margin-right:.4rem">
+              <i class="bi bi-trophy-fill" style="font-size:.65rem;color:#fff"></i>
+            </span>SportHub
+          </div>
+          <p class="mb-0" style="font-size:.82rem">Plataforma de reserva de canchas deportivas. Simple, rápido y confiable.</p>
+        </div>
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-3" style="font-size:.82rem">Deportes</h6>
+          <ul class="list-unstyled mb-0" style="font-size:.82rem">
+            <li class="mb-2"><a routerLink="/canchas" [queryParams]="{ tipo: 'futbol' }">Fútbol</a></li>
+            <li class="mb-2"><a routerLink="/canchas" [queryParams]="{ tipo: 'padel' }">Pádel</a></li>
+            <li class="mb-2"><a routerLink="/canchas" [queryParams]="{ tipo: 'tenis' }">Tenis</a></li>
+            <li><a routerLink="/canchas" [queryParams]="{ tipo: 'basquetbol' }">Básquetbol</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h6 class="fw-bold mb-3" style="font-size:.82rem">Acceso</h6>
+          <ul class="list-unstyled mb-0" style="font-size:.82rem">
+            <li class="mb-2"><a routerLink="/login">Iniciar sesión</a></li>
+            <li class="mb-2"><a routerLink="/registro">Crear cuenta</a></li>
+            <li><a routerLink="/canchas">Ver canchas</a></li>
+          </ul>
+        </div>
+      </div>
+      <hr class="footer-divider">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <span style="font-size:.78rem">© {{ anio }} SportHub Reservas</span>
+        <span style="font-size:.78rem">DSY2202 — Experiencia 2</span>
+      </div>
+    </ng-container>
+
+    <ng-template #mini>
+      <div class="d-flex justify-content-between flex-wrap gap-3">
+        <div class="footer-brand">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--green);border-radius:5px;margin-right:.4rem">
+            <i class="bi bi-trophy-fill" style="font-size:.65rem;color:#fff"></i>
+          </span>SportHub
+        </div>
+        <span style="font-size:.78rem">© {{ anio }} SportHub Reservas — DSY2202</span>
+      </div>
+    </ng-template>
+
+  </div>
+</footer>

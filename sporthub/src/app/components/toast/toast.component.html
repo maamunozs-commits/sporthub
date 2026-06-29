@@ -1,0 +1,6 @@
+<div class="sh-toast-container">
+  <div *ngFor="let t of toasts$ | async" class="sh-toast" [ngClass]="t.tipo"
+       (click)="cerrar(t.id)" role="alert">
+    <i class="bi me-2" [ngClass]="'bi-' + icono(t.tipo)"></i>{{ t.mensaje }}
+  </div>
+</div>

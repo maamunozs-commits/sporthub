@@ -1,0 +1,73 @@
+<div class="container-fluid px-4">
+
+  <div class="d-flex justify-content-between align-items-start mb-5 flex-wrap gap-3">
+    <div>
+      <h1 class="fw-bold mb-0" style="font-size:1.4rem">Reservas</h1>
+      <p class="text-muted mb-0 mt-1" style="font-size:.875rem">
+        {{ reservas.length }} resultado{{ reservas.length !== 1 ? 's' : '' }} · Ingresos confirmados: <strong>{{ ingresos | precioClp }}</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="card-sh p-3 mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-12 col-md-4">
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-search" style="font-size:.82rem"></i></span>
+          <input type="text" class="form-control" placeholder="Buscar cliente…" [(ngModel)]="busquedaCliente">
+        </div>
+      </div>
+      <div class="col-6 col-md-2">
+        <select class="form-select" [(ngModel)]="filtroEstado">
+          <option value="">Todos</option>
+          <option value="confirmada">Confirmadas</option>
+          <option value="cancelada">Canceladas</option>
+        </select>
+      </div>
+      <div class="col-6 col-md-2">
+        <select class="form-select" [(ngModel)]="filtroTipo">
+          <option value="">Todos</option>
+          <option value="futbol">Fútbol</option>
+          <option value="padel">Pádel</option>
+          <option value="tenis">Tenis</option>
+          <option value="basquetbol">Básquetbol</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-auto">
+        <button class="btn btn-outline-sh" (click)="limpiar()" style="font-size:.875rem"><i class="bi bi-x-lg me-1" style="font-size:.8rem"></i>Limpiar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-sh">
+    <div class="table-responsive p-4">
+      <table class="table-sh w-100">
+        <thead>
+          <tr><th>#</th><th>Cliente</th><th>Cancha</th><th>Fecha</th><th>Hora</th><th>Total</th><th>Estado</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="reservas.length === 0"><td colspan="7" class="text-center text-muted py-4">No se encontraron reservas</td></tr>
+          <tr *ngFor="let r of reservas">
+            <td style="color:var(--text-muted);font-size:.8rem">{{ codigo(r) }}</td>
+            <td>
+              <div class="fw-semibold" style="font-size:.875rem">{{ r.clienteNombre }}</div>
+              <div style="font-size:.78rem;color:var(--text-muted)">{{ r.clienteCorreo }}</div>
+            </td>
+            <td style="font-size:.875rem">{{ emoji(r.canchaTipo) }} {{ r.canchaNombre }}</td>
+            <td style="font-size:.875rem">{{ r.fecha | fechaEs }}</td>
+            <td><span class="badge-sh badge-gray" style="font-size:.73rem">{{ r.hora }}</span></td>
+            <td class="fw-semibold" style="font-size:.875rem">{{ r.precio | precioClp }}</td>
+            <td>
+              <div class="d-flex align-items-center gap-1">
+                <span class="badge-sh" [ngClass]="r.estado === 'confirmada' ? 'badge-green' : 'badge-red'" style="font-size:.73rem">{{ r.estado }}</span>
+                <button *ngIf="r.estado === 'confirmada'" class="btn btn-outline-sh btn-sm" (click)="cancelar(r)" title="Cancelar"
+                        style="padding:.25rem .5rem;font-size:.78rem;color:var(--red);border-color:#FECACA"><i class="bi bi-x-lg"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

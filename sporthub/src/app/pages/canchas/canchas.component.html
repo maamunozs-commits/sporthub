@@ -1,0 +1,72 @@
+<div class="page-header">
+  <div class="container">
+    <nav aria-label="breadcrumb" class="mb-2">
+      <ol class="breadcrumb mb-0" style="font-size:.82rem">
+        <li class="breadcrumb-item"><a routerLink="/">Inicio</a></li>
+        <li class="breadcrumb-item active">Canchas</li>
+      </ol>
+    </nav>
+    <h1 class="fw-bold mb-0" style="font-size:1.5rem">Catálogo de canchas</h1>
+  </div>
+</div>
+
+<section class="py-section">
+  <div class="container">
+
+    <!-- Filtros -->
+    <div class="card-sh p-3 mb-5">
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-md-4">
+          <label class="form-label">Buscar</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search" style="font-size:.82rem"></i></span>
+            <input type="text" class="form-control" placeholder="Nombre o tipo de deporte…" [(ngModel)]="busqueda">
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">Deporte</label>
+          <select class="form-select" [(ngModel)]="filtroTipo">
+            <option value="">Todos</option>
+            <option value="futbol">Fútbol</option>
+            <option value="padel">Pádel</option>
+            <option value="tenis">Tenis</option>
+            <option value="basquetbol">Básquetbol</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="form-label">Estado</label>
+          <select class="form-select" [(ngModel)]="filtroEstado">
+            <option value="">Solo disponibles</option>
+            <option value="disponible">Disponible</option>
+            <option value="no disponible">No disponible</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-2">
+          <button class="btn btn-outline-sh w-100" (click)="limpiar()">
+            <i class="bi bi-x-lg me-1" style="font-size:.8rem"></i>Limpiar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <span style="font-size:.82rem;color:var(--text-muted);font-weight:500">
+        {{ canchasFiltradas.length }} cancha{{ canchasFiltradas.length !== 1 ? 's' : '' }} encontrada{{ canchasFiltradas.length !== 1 ? 's' : '' }}
+      </span>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 text-center py-5" *ngIf="canchasFiltradas.length === 0">
+        <div style="font-size:4rem;opacity:.25">🏟️</div>
+        <p class="text-muted mt-3 mb-4">No se encontraron canchas con los filtros aplicados.</p>
+        <button class="btn btn-outline-sh" (click)="limpiar()"><i class="bi bi-x-circle me-2"></i>Limpiar filtros</button>
+      </div>
+
+      <div class="col-sm-6 col-xl-4" *ngFor="let c of canchasFiltradas">
+        <app-cancha-card [cancha]="c" [autenticado]="autenticado"
+                         (verDetalle)="verDetalle($event)" (reservar)="verDetalle($event)"></app-cancha-card>
+      </div>
+    </div>
+
+  </div>
+</section>

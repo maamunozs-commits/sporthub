@@ -1,0 +1,79 @@
+<div class="container-fluid px-4">
+
+  <div class="mb-5">
+    <h1 class="fw-bold mb-0" style="font-size:1.4rem">Gestión de horarios</h1>
+    <p class="text-muted mb-0 mt-1" style="font-size:.875rem">Bloquea o habilita horarios por cancha y fecha</p>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- Selector -->
+    <div class="col-lg-3">
+      <div class="card-sh p-4 mb-3">
+        <div class="fw-bold mb-3" style="font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)">Seleccionar</div>
+
+        <div class="mb-3">
+          <label class="form-label" for="selCancha">Cancha</label>
+          <select id="selCancha" class="form-select" [(ngModel)]="canchaId" (ngModelChange)="recalcular()">
+            <option [ngValue]="null">-- Selecciona una cancha --</option>
+            <option *ngFor="let c of canchas" [ngValue]="c.id">{{ emoji(c.tipo) }} {{ c.nombre }}</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label" for="fechaH">Fecha</label>
+          <input type="date" id="fechaH" class="form-control" [min]="fechaMin" [(ngModel)]="fecha" (ngModelChange)="recalcular()">
+        </div>
+
+        <div class="d-grid gap-2">
+          <button class="btn btn-outline-sh" (click)="bloquearTodo()" style="font-size:.82rem;color:var(--red);border-color:#FECACA"><i class="bi bi-lock-fill me-2"></i>Bloquear todo el día</button>
+          <button class="btn btn-outline-sh" (click)="desbloquearTodo()" style="font-size:.82rem;color:var(--green);border-color:#BBF7D0"><i class="bi bi-unlock-fill me-2"></i>Desbloquear todo</button>
+        </div>
+      </div>
+
+      <div class="card-sh p-4">
+        <div class="fw-bold mb-3" style="font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)">Leyenda</div>
+        <div class="d-flex flex-column gap-2" style="font-size:.82rem;color:var(--text-muted)">
+          <div class="d-flex align-items-center gap-2"><span class="time-slot py-0 px-2 d-inline-block" style="font-size:.73rem;pointer-events:none">08:00</span><span>Libre — clic para bloquear</span></div>
+          <div class="d-flex align-items-center gap-2"><span class="time-slot bloqueado py-0 px-2 d-inline-block" style="font-size:.73rem;pointer-events:none">09:00</span><span>Bloqueado — clic para liberar</span></div>
+          <div class="d-flex align-items-center gap-2"><span class="time-slot ocupado py-0 px-2 d-inline-block" style="font-size:.73rem;pointer-events:none">10:00</span><span>Reservado por cliente</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grilla -->
+    <div class="col-lg-9">
+      <div class="card-sh p-4">
+        <div *ngIf="!cancha" class="text-center py-5" style="color:var(--text-light)">
+          <i class="bi bi-calendar-event" style="font-size:2.5rem;display:block;margin-bottom:1rem"></i>
+          <p class="mb-0" style="font-size:.875rem">Selecciona una cancha y una fecha para gestionar los horarios.</p>
+        </div>
+
+        <ng-container *ngIf="cancha">
+          <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+            <div>
+              <h6 class="fw-bold mb-0">{{ cancha.nombre }}</h6>
+              <small class="text-muted">{{ fecha | fechaEs }} · {{ resumen.libres }}/{{ resumen.total }} horarios libres</small>
+            </div>
+          </div>
+
+          <div class="d-flex flex-wrap gap-1">
+            <span *ngFor="let s of slots" class="time-slot"
+                  [class.ocupado]="s.estado === 'ocupado'"
+                  [class.bloqueado]="s.estado === 'bloqueado'"
+                  [style.cursor]="s.estado === 'ocupado' ? 'not-allowed' : 'pointer'"
+                  (click)="toggle(s)">
+              {{ s.hora }}
+              <i *ngIf="s.estado === 'bloqueado'" class="bi bi-lock-fill" style="font-size:.65rem"></i>
+            </span>
+          </div>
+
+          <p class="text-muted small mt-3 mb-0">
+            <i class="bi bi-info-circle me-1"></i>Haz clic en un horario libre para bloquearlo, o en uno bloqueado para liberarlo.
+          </p>
+        </ng-container>
+      </div>
+    </div>
+
+  </div>
+</div>

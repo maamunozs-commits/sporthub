@@ -1,0 +1,115 @@
+<div class="container-fluid px-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-5 flex-wrap gap-3">
+    <div>
+      <h1 class="fw-bold mb-0" style="font-size:1.4rem">Canchas</h1>
+      <p class="text-muted mb-0 mt-1" style="font-size:.875rem">{{ canchasFiltradas.length }} canchas</p>
+    </div>
+    <button class="btn btn-dark-sh" (click)="nueva()"><i class="bi bi-plus me-1"></i>Nueva cancha</button>
+  </div>
+
+  <div class="card-sh p-3 mb-4">
+    <div class="input-group" style="max-width:340px">
+      <span class="input-group-text"><i class="bi bi-search" style="font-size:.82rem"></i></span>
+      <input type="text" class="form-control" placeholder="Buscar cancha…" [(ngModel)]="busqueda">
+    </div>
+  </div>
+
+  <div class="card-sh">
+    <div class="table-responsive p-4">
+      <table class="table-sh w-100">
+        <thead>
+          <tr><th>Nombre</th><th>Tipo</th><th>Precio/hr</th><th>Capacidad</th><th>Reservas</th><th>Estado</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="canchasFiltradas.length === 0"><td colspan="7" class="text-center text-muted py-4">No hay canchas registradas</td></tr>
+          <tr *ngFor="let c of canchasFiltradas">
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <img class="admin-court-thumb" [src]="imagen(c)" [alt]="c.nombre">
+                <div>
+                  <span class="fw-semibold d-block">{{ c.nombre }}</span>
+                  <span class="text-muted" style="font-size:.78rem">{{ emoji(c.tipo) }} {{ label(c.tipo) }}</span>
+                </div>
+              </div>
+            </td>
+            <td><span class="badge-sh badge-navy" style="font-size:.73rem">{{ label(c.tipo) }}</span></td>
+            <td class="fw-semibold">{{ c.precio | precioClp }}</td>
+            <td>{{ c.capacidad }}</td>
+            <td><span class="badge-sh badge-blue" style="font-size:.73rem">{{ reservasDe(c.id) }}</span></td>
+            <td><span class="badge-sh" [ngClass]="c.estado === 'disponible' ? 'badge-green' : 'badge-gray'" style="font-size:.73rem">{{ c.estado }}</span></td>
+            <td>
+              <div class="d-flex gap-1">
+                <button class="btn btn-outline-sh btn-sm" (click)="editar(c)" title="Editar" style="padding:.3rem .6rem;font-size:.8rem"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-sh btn-sm" (click)="eliminar(c)" title="Eliminar" style="padding:.3rem .6rem;font-size:.8rem;color:var(--red);border-color:#FECACA"><i class="bi bi-trash3"></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Modal -->
+<div *ngIf="modalAbierto" class="sh-modal-backdrop" (click)="cerrar()"
+     style="position:fixed;inset:0;background:rgba(12,26,46,.5);z-index:1050;display:flex;align-items:flex-start;justify-content:center;padding:3rem 1rem;overflow:auto">
+  <div class="card-sh" style="max-width:680px;width:100%" (click)="$event.stopPropagation()">
+    <div class="d-flex justify-content-between align-items-center" style="background:var(--navy);padding:1.25rem 1.5rem;border-radius:var(--r-lg) var(--r-lg) 0 0">
+      <h5 class="modal-title fw-bold text-white mb-0">{{ editandoId ? 'Editar cancha' : 'Nueva cancha' }}</h5>
+      <button type="button" class="btn-close btn-close-white" (click)="cerrar()"></button>
+    </div>
+    <div class="p-4">
+      <div *ngIf="alertaModal" class="alert alert-danger mb-3">{{ alertaModal }}</div>
+      <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="nombre" placeholder="Ej: Cancha Fútbol Premium"
+                   [class.is-invalid]="f['nombre'].touched && f['nombre'].invalid">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Tipo <span class="text-danger">*</span></label>
+            <select class="form-select" formControlName="tipo" [class.is-invalid]="f['tipo'].touched && f['tipo'].invalid">
+              <option value="">Seleccionar…</option>
+              <option value="futbol">Fútbol</option>
+              <option value="padel">Pádel</option>
+              <option value="tenis">Tenis</option>
+              <option value="basquetbol">Básquetbol</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Precio/hr <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control" formControlName="precio" min="1" placeholder="15000"
+                     [class.is-invalid]="f['precio'].touched && f['precio'].invalid">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Capacidad</label>
+            <input type="number" class="form-control" formControlName="capacidad" min="1" placeholder="10">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Estado <span class="text-danger">*</span></label>
+            <select class="form-select" formControlName="estado" [class.is-invalid]="f['estado'].touched && f['estado'].invalid">
+              <option value="">Seleccionar…</option>
+              <option value="disponible">Disponible</option>
+              <option value="no disponible">No disponible</option>
+            </select>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" formControlName="descripcion" rows="3" placeholder="Descripción, instalaciones disponibles…"></textarea>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4 pt-3" style="border-top:1px solid var(--border)">
+          <button type="button" class="btn btn-outline-sh" (click)="cerrar()">Cancelar</button>
+          <button type="submit" class="btn btn-dark-sh px-4">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

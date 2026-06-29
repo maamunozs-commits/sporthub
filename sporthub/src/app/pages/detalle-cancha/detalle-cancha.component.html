@@ -1,0 +1,148 @@
+<ng-container *ngIf="cancha">
+  <!-- Hero -->
+  <div class="detalle-hero"
+       [style.background-image]="'linear-gradient(90deg, rgba(12,26,46,.94), rgba(12,26,46,.58)), url(' + imagen(cancha) + ')'">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb mb-0" style="font-size:.82rem">
+          <li class="breadcrumb-item"><a routerLink="/" style="color:rgba(255,255,255,.6);text-decoration:none">Inicio</a></li>
+          <li class="breadcrumb-item"><a routerLink="/canchas" style="color:rgba(255,255,255,.6);text-decoration:none">Canchas</a></li>
+          <li class="breadcrumb-item active" style="color:rgba(255,255,255,.85)">Detalle</li>
+        </ol>
+      </nav>
+      <div class="d-flex align-items-center gap-3 flex-wrap">
+        <span style="font-size:3.5rem;filter:drop-shadow(0 2px 6px rgba(0,0,0,.4))">{{ emoji(cancha.tipo) }}</span>
+        <div>
+          <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+            <span class="badge-sh badge-navy" style="font-size:.7rem">{{ label(cancha.tipo) }}</span>
+            <span class="badge-sh" [ngClass]="cancha.estado === 'disponible' ? 'badge-green' : 'badge-red'">
+              {{ cancha.estado === 'disponible' ? 'Disponible' : 'No disponible' }}
+            </span>
+          </div>
+          <h1 class="fw-bold text-white mb-0" style="font-size:1.75rem;letter-spacing:-.3px">{{ cancha.nombre }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section class="py-4" style="background:var(--bg)">
+    <div class="container">
+      <div class="row g-4">
+
+        <!-- Columna principal -->
+        <div class="col-lg-7">
+          <div class="card-sh p-4 mb-3">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem">Descripción</h5>
+            <p class="mb-0" style="font-size:.9rem;color:var(--text-mid);line-height:1.7">{{ cancha.descripcion }}</p>
+          </div>
+
+          <div class="card-sh p-4">
+            <h5 class="fw-bold mb-4" style="font-size:.95rem">Seleccionar horario</h5>
+
+            <div *ngIf="alerta" class="alert mb-3" [ngClass]="'alert-' + alerta.tipo">{{ alerta.texto }}</div>
+
+            <!-- No disponible / no autenticado -->
+            <div *ngIf="cancha.estado !== 'disponible'" class="alert alert-warning">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>Esta cancha no está disponible actualmente.
+            </div>
+            <div *ngIf="cancha.estado === 'disponible' && !autenticado" class="alert alert-info">
+              <i class="bi bi-info-circle me-2"></i>Debes <a routerLink="/login" class="alert-link">iniciar sesión</a> para hacer una reserva.
+            </div>
+
+            <ng-container *ngIf="cancha.estado === 'disponible' && autenticado">
+              <div class="mb-4">
+                <label class="form-label" for="fecha">Fecha de reserva</label>
+                <input type="date" id="fecha" class="form-control" style="max-width:200px"
+                       [min]="fechaMin" [(ngModel)]="fecha" (ngModelChange)="generarSlots()">
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">Horarios disponibles</label>
+                <div class="d-flex flex-wrap gap-1">
+                  <span *ngFor="let s of slots" class="time-slot"
+                        [class.ocupado]="s.estado === 'ocupado'"
+                        [class.bloqueado]="s.estado === 'bloqueado'"
+                        [class.selected]="horaSeleccionada === s.hora"
+                        (click)="seleccionar(s)">
+                    {{ s.hora }}
+                    <i *ngIf="s.estado === 'bloqueado'" class="bi bi-lock-fill" style="font-size:.65rem"></i>
+                  </span>
+                </div>
+                <div class="d-flex gap-3 flex-wrap mt-2" style="font-size:.75rem;color:var(--text-muted)">
+                  <span><span class="time-slot py-0 px-2 d-inline-block" style="pointer-events:none">08:00</span> Disponible</span>
+                  <span><span class="time-slot selected py-0 px-2 d-inline-block" style="pointer-events:none">09:00</span> Seleccionado</span>
+                  <span><span class="time-slot ocupado py-0 px-2 d-inline-block" style="pointer-events:none">10:00</span> Ocupado</span>
+                </div>
+              </div>
+
+              <!-- Resumen -->
+              <div *ngIf="horaSeleccionada" class="booking-summary mb-4">
+                <div class="fw-bold mb-2" style="font-size:.82rem;color:var(--navy);text-transform:uppercase;letter-spacing:.05em">Resumen de reserva</div>
+                <div class="row g-2" style="font-size:.875rem">
+                  <div class="col-6"><span style="color:var(--text-muted)">Cancha</span><br><strong>{{ cancha.nombre }}</strong></div>
+                  <div class="col-6"><span style="color:var(--text-muted)">Tipo</span><br><strong>{{ label(cancha.tipo) }}</strong></div>
+                  <div class="col-6"><span style="color:var(--text-muted)">Fecha</span><br><strong>{{ fecha | fechaEs }}</strong></div>
+                  <div class="col-6"><span style="color:var(--text-muted)">Hora</span><br><strong>{{ horaSeleccionada }}</strong></div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3 pt-2" style="border-top:1px solid #C7D2FE">
+                  <span style="font-size:.82rem;font-weight:600;color:var(--navy)">Total</span>
+                  <span class="fw-bold" style="font-size:1.15rem;color:var(--navy)">{{ cancha.precio | precioClp }}</span>
+                </div>
+              </div>
+
+              <button class="btn btn-green-sh w-100 py-2" (click)="continuar()">
+                Continuar con la reserva <i class="bi bi-arrow-right ms-2"></i>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Columna lateral -->
+        <div class="col-lg-5">
+          <div class="card-sh mb-3">
+            <img class="detalle-cancha-img" [src]="imagen(cancha)" [alt]="cancha.nombre">
+          </div>
+
+          <div class="card-sh p-4 mb-3">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem">Información</h5>
+            <div class="d-flex flex-column gap-3">
+              <div class="d-flex justify-content-between align-items-center py-2" style="border-bottom:1px solid var(--border)">
+                <span style="font-size:.85rem;color:var(--text-muted)">Precio por hora</span>
+                <span class="fw-bold" style="font-size:1.1rem">{{ cancha.precio | precioClp }}</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center py-2" style="border-bottom:1px solid var(--border)">
+                <span style="font-size:.85rem;color:var(--text-muted)">Capacidad máxima</span>
+                <span class="fw-semibold" style="font-size:.875rem">{{ cancha.capacidad }} personas</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center py-2" style="border-bottom:1px solid var(--border)">
+                <span style="font-size:.85rem;color:var(--text-muted)">Tipo de deporte</span>
+                <span class="fw-semibold" style="font-size:.875rem">{{ label(cancha.tipo) }}</span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center py-2">
+                <span style="font-size:.85rem;color:var(--text-muted)">Disponibilidad</span>
+                <span class="badge-sh" [ngClass]="cancha.estado === 'disponible' ? 'badge-green' : 'badge-red'">
+                  {{ cancha.estado === 'disponible' ? 'Disponible' : 'No disponible' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-sh p-4">
+            <h5 class="fw-bold mb-3" style="font-size:.95rem">Instalaciones</h5>
+            <ul class="list-unstyled mb-0" style="font-size:.875rem;color:var(--text-mid)">
+              <li class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-check-circle-fill" style="color:var(--green);font-size:.85rem"></i>Iluminación LED nocturna</li>
+              <li class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-check-circle-fill" style="color:var(--green);font-size:.85rem"></i>Vestuarios y duchas</li>
+              <li class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-check-circle-fill" style="color:var(--green);font-size:.85rem"></i>Estacionamiento</li>
+              <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill" style="color:var(--green);font-size:.85rem"></i>Equipamiento básico incluido</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mt-4">
+        <a routerLink="/canchas" class="btn btn-outline-sh" style="font-size:.875rem"><i class="bi bi-arrow-left me-2"></i>Volver al catálogo</a>
+      </div>
+    </div>
+  </section>
+</ng-container>

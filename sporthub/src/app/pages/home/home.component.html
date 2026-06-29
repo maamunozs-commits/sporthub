@@ -1,0 +1,150 @@
+<!-- Hero -->
+<section class="hero">
+  <div class="container position-relative" style="z-index:1">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 col-xl-5">
+        <div class="hero-eyebrow">
+          <span style="width:6px;height:6px;background:var(--green-400);border-radius:50%;display:inline-block"></span>
+          Plataforma de Reservas Deportivas
+        </div>
+        <h1 class="hero-title">Reserva tu cancha.<br><em>Juega cuando quieras.</em></h1>
+        <p class="hero-subtitle">Fútbol, pádel, tenis y básquetbol disponibles. Elige horario, confirma en segundos.</p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a routerLink="/canchas" class="btn btn-green-sh px-4 py-2">
+            Ver canchas disponibles <i class="bi bi-arrow-right ms-2"></i>
+          </a>
+          <a *ngIf="!autenticado" routerLink="/registro" class="btn btn-ghost-sh px-4 py-2">Crear cuenta gratis</a>
+        </div>
+      </div>
+
+      <div class="col-lg-5 offset-lg-1 d-none d-lg-block">
+        <div style="border:1px solid rgba(255,255,255,.1);border-radius:14px;overflow:hidden">
+          <div style="padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between">
+            <span style="font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.35)">Canchas disponibles</span>
+            <span class="badge-sh badge-green" style="font-size:.68rem">En línea</span>
+          </div>
+          <div style="background:rgba(255,255,255,.03)">
+            <a routerLink="/canchas" [queryParams]="{ tipo: 'futbol' }" class="text-decoration-none d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(255,255,255,.07)">
+              <div class="d-flex align-items-center gap-3">
+                <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.2)"></div>
+                <span style="color:#fff;font-size:.9rem;font-weight:600">Fútbol</span>
+              </div>
+              <span style="color:rgba(255,255,255,.4);font-size:.82rem">Desde $20.000/hr</span>
+            </a>
+            <a routerLink="/canchas" [queryParams]="{ tipo: 'padel' }" class="text-decoration-none d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(255,255,255,.07)">
+              <div class="d-flex align-items-center gap-3">
+                <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.2)"></div>
+                <span style="color:#fff;font-size:.9rem;font-weight:600">Pádel</span>
+              </div>
+              <span style="color:rgba(255,255,255,.4);font-size:.82rem">Desde $12.000/hr</span>
+            </a>
+            <a routerLink="/canchas" [queryParams]="{ tipo: 'tenis' }" class="text-decoration-none d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid rgba(255,255,255,.07)">
+              <div class="d-flex align-items-center gap-3">
+                <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.2)"></div>
+                <span style="color:#fff;font-size:.9rem;font-weight:600">Tenis</span>
+              </div>
+              <span style="color:rgba(255,255,255,.4);font-size:.82rem">Desde $15.000/hr</span>
+            </a>
+            <a routerLink="/canchas" [queryParams]="{ tipo: 'basquetbol' }" class="text-decoration-none d-flex align-items-center justify-content-between px-4 py-3">
+              <div class="d-flex align-items-center gap-3">
+                <div style="width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 3px rgba(34,197,94,.2)"></div>
+                <span style="color:#fff;font-size:.9rem;font-weight:600">Básquetbol</span>
+              </div>
+              <span style="color:rgba(255,255,255,.4);font-size:.82rem">Desde $10.000/hr</span>
+            </a>
+          </div>
+          <div style="padding:.875rem 1.25rem;border-top:1px solid rgba(255,255,255,.08);display:flex;gap:2rem">
+            <div>
+              <div style="font-size:1.35rem;font-weight:800;color:#fff;line-height:1">{{ stats.canchas }}</div>
+              <div style="font-size:.73rem;color:rgba(255,255,255,.4);margin-top:.2rem">Canchas activas</div>
+            </div>
+            <div>
+              <div style="font-size:1.35rem;font-weight:800;color:#fff;line-height:1">{{ stats.reservas }}</div>
+              <div style="font-size:.73rem;color:rgba(255,255,255,.4);margin-top:.2rem">Reservas totales</div>
+            </div>
+            <div>
+              <div style="font-size:1.35rem;font-weight:800;color:#fff;line-height:1">{{ stats.clientes }}</div>
+              <div style="font-size:.73rem;color:rgba(255,255,255,.4);margin-top:.2rem">Clientes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Canchas destacadas -->
+<section class="py-section">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-end mb-5 flex-wrap gap-3">
+      <div>
+        <div class="eyebrow mb-1">Disponibilidad</div>
+        <h2 class="section-title mb-0">Canchas para reservar</h2>
+      </div>
+      <a routerLink="/canchas" class="btn btn-outline-sh">Ver todas las canchas <i class="bi bi-arrow-right ms-2"></i></a>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-12 text-center text-muted py-4" *ngIf="destacadas.length === 0">No hay canchas disponibles.</div>
+      <div class="col-sm-6 col-xl-4" *ngFor="let c of destacadas">
+        <app-cancha-card [cancha]="c" [autenticado]="autenticado"
+                         (verDetalle)="verDetalle($event)" (reservar)="verDetalle($event)"></app-cancha-card>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Proceso -->
+<section class="py-section" style="background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div class="container">
+    <div class="text-center mb-5">
+      <div class="eyebrow mb-1">Proceso</div>
+      <h2 class="section-title">Reserva en 3 pasos</h2>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-pill">
+          <div class="pill-icon"><i class="bi bi-search"></i></div>
+          <div>
+            <div class="mb-1" style="font-weight:700">1. Elige tu cancha</div>
+            <p class="text-muted mb-0" style="font-size:.875rem">Filtra por deporte, precio o disponibilidad y encuentra la cancha perfecta.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-pill">
+          <div class="pill-icon"><i class="bi bi-calendar-check"></i></div>
+          <div>
+            <div class="mb-1" style="font-weight:700">2. Selecciona fecha y hora</div>
+            <p class="text-muted mb-0" style="font-size:.875rem">Elige el día y el horario que mejor se adapte a tu agenda deportiva.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-pill">
+          <div class="pill-icon"><i class="bi bi-shield-check"></i></div>
+          <div>
+            <div class="mb-1" style="font-weight:700">3. Confirma y juega</div>
+            <p class="text-muted mb-0" style="font-size:.875rem">Confirma el pago de forma segura y recibe tu comprobante de reserva al instante.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background:var(--navy);padding:4rem 0">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-8">
+        <h2 class="fw-bold text-white mb-1" style="font-size:1.7rem;letter-spacing:-.3px">¿Listo para reservar tu cancha?</h2>
+        <p class="mb-0" style="color:rgba(255,255,255,.5);font-size:.95rem">Únete a SportHub y empieza a disfrutar de la mejor experiencia deportiva.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a *ngIf="!autenticado" routerLink="/registro" class="btn btn-green-sh px-5 py-2 me-2">Registrarse</a>
+        <a routerLink="/canchas" class="btn btn-ghost-sh px-4 py-2">Ver canchas</a>
+      </div>
+    </div>
+  </div>
+</section>

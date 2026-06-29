@@ -1,0 +1,55 @@
+<div class="container-fluid px-4">
+
+  <div class="mb-5">
+    <h1 class="fw-bold mb-0" style="font-size:1.4rem">Usuarios</h1>
+    <p class="text-muted mb-0 mt-1" style="font-size:.875rem">{{ clientes.length }} cliente{{ clientes.length !== 1 ? 's' : '' }}</p>
+  </div>
+
+  <div class="card-sh p-3 mb-4">
+    <div class="d-flex gap-3 align-items-center flex-wrap">
+      <div class="input-group" style="max-width:340px">
+        <span class="input-group-text"><i class="bi bi-search" style="font-size:.82rem"></i></span>
+        <input type="text" class="form-control" placeholder="Buscar por nombre o correo…" [(ngModel)]="busqueda">
+      </div>
+      <div class="ms-auto">
+        <span class="badge-sh badge-gray" style="font-size:.75rem"><i class="bi bi-info-circle me-1"></i>Solo clientes · La cuenta admin no se puede eliminar</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-sh">
+    <div class="table-responsive p-4">
+      <table class="table-sh w-100">
+        <thead>
+          <tr><th>Cliente</th><th>Correo</th><th>Teléfono</th><th>Registro</th><th>Reservas</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="clientes.length === 0"><td colspan="6" class="text-center text-muted py-4">No hay clientes registrados</td></tr>
+          <tr *ngFor="let u of clientes">
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center justify-content-center rounded-2 fw-bold text-white"
+                     style="width:32px;height:32px;background:var(--navy);font-size:.8rem;flex-shrink:0">{{ inicial(u) }}</div>
+                <span class="fw-semibold">{{ u.nombre }}</span>
+              </div>
+            </td>
+            <td style="color:var(--text-muted);font-size:.875rem">{{ u.correo }}</td>
+            <td style="font-size:.875rem">{{ u.telefono || '—' }}</td>
+            <td style="font-size:.82rem;color:var(--text-muted)">{{ fecha(u) }}</td>
+            <td>
+              <span class="badge-sh badge-green" style="font-size:.73rem">{{ reservas(u).conf }} conf.</span>
+              <span *ngIf="reservas(u).total !== reservas(u).conf" class="badge-sh badge-red ms-1" style="font-size:.73rem">
+                {{ reservas(u).total - reservas(u).conf }} canc.
+              </span>
+            </td>
+            <td>
+              <button class="btn btn-outline-sh btn-sm" (click)="eliminar(u)" title="Eliminar"
+                      style="padding:.3rem .6rem;font-size:.8rem;color:var(--red);border-color:#FECACA"><i class="bi bi-person-x"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

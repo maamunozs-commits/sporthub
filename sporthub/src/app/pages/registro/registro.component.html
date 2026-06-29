@@ -1,0 +1,106 @@
+<div class="auth-bg">
+  <div class="container d-flex align-items-center justify-content-center py-5" style="position:relative;z-index:1">
+    <div class="row w-100 justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+
+        <div class="mb-4 text-center">
+          <a routerLink="/" class="text-decoration-none">
+            <div class="auth-logo-text text-white">
+              <span class="auth-logo-icon"><i class="bi bi-trophy-fill"></i></span>SportHub
+            </div>
+          </a>
+        </div>
+
+        <div class="auth-panel">
+          <div class="mb-4">
+            <h1 class="fw-bold mb-1" style="font-size:1.4rem">Crear cuenta</h1>
+            <p class="text-muted mb-0" style="font-size:.875rem">Completa el formulario para registrarte</p>
+          </div>
+
+          <div *ngIf="alerta" class="alert mb-3" [ngClass]="'alert-' + alerta.tipo">
+            <i class="bi me-2" [ngClass]="alerta.tipo === 'success' ? 'bi-check-circle' : 'bi-exclamation-circle'"></i>
+            {{ alerta.texto }}
+          </div>
+
+          <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="nombre">Nombre completo <span class="text-danger">*</span></label>
+              <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                     [class.is-invalid]="f['nombre'].touched && f['nombre'].invalid"
+                     placeholder="Tu nombre completo" appAutofocus>
+              <div class="invalid-feedback" *ngIf="f['nombre'].touched && f['nombre'].errors?.['required']">El nombre es obligatorio.</div>
+              <div class="invalid-feedback" *ngIf="f['nombre'].touched && f['nombre'].errors?.['minlength']">Mínimo 3 caracteres.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="correo">Correo electrónico <span class="text-danger">*</span></label>
+              <input type="email" id="correo" class="form-control" formControlName="correo"
+                     [class.is-invalid]="f['correo'].touched && f['correo'].invalid" placeholder="tu@correo.com">
+              <div class="invalid-feedback" *ngIf="f['correo'].touched && f['correo'].invalid">Ingresa un correo válido.</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="telefono">Teléfono <span class="text-danger">*</span></label>
+              <input type="tel" id="telefono" class="form-control" formControlName="telefono"
+                     [class.is-invalid]="f['telefono'].touched && f['telefono'].invalid" placeholder="987654321">
+              <p class="mt-1 mb-0" style="font-size:.78rem;color:var(--text-muted)">Solo números, entre 8 y 12 dígitos.</p>
+              <div class="invalid-feedback" *ngIf="f['telefono'].touched && f['telefono'].errors?.['telefono']">El teléfono debe tener entre 8 y 12 dígitos.</div>
+            </div>
+
+            <div class="mb-2">
+              <label class="form-label mb-1" for="password">Contraseña <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input [type]="verPassword ? 'text' : 'password'" id="password" class="form-control"
+                       formControlName="password"
+                       [class.is-invalid]="f['password'].touched && f['password'].invalid"
+                       placeholder="Mínimo 8 caracteres">
+                <button type="button" class="btn btn-outline-secondary" style="border:1.5px solid var(--border);border-left:none"
+                        (click)="verPassword = !verPassword">
+                  <i class="bi" [ngClass]="verPassword ? 'bi-eye-slash' : 'bi-eye'" style="font-size:.85rem"></i>
+                </button>
+              </div>
+              <div class="mt-1" *ngIf="f['password'].value">
+                <small class="text-success" *ngIf="erroresPassword.length === 0">
+                  <i class="bi bi-shield-check me-1"></i>Contraseña segura ✓</small>
+                <small class="text-warning" *ngIf="erroresPassword.length > 0">
+                  <i class="bi bi-exclamation-circle me-1"></i>Faltan: {{ erroresPassword.join(' · ') }}</small>
+              </div>
+            </div>
+
+            <div class="mb-3 p-3 rounded-3" style="background:var(--bg);font-size:.78rem;color:var(--text-muted)">
+              <div class="row g-1">
+                <div class="col-6"><i class="bi bi-dot"></i>Mínimo 8 caracteres</div>
+                <div class="col-6"><i class="bi bi-dot"></i>Una mayúscula</div>
+                <div class="col-6"><i class="bi bi-dot"></i>Un número</div>
+                <div class="col-6"><i class="bi bi-dot"></i>Un carácter especial</div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="confirmar">Confirmar contraseña <span class="text-danger">*</span></label>
+              <div class="input-group">
+                <input [type]="verConfirmar ? 'text' : 'password'" id="confirmar" class="form-control"
+                       formControlName="confirmar"
+                       [class.is-invalid]="f['confirmar'].touched && (f['confirmar'].invalid || form.errors?.['noCoinciden'])"
+                       placeholder="Repite tu contraseña">
+                <button type="button" class="btn btn-outline-secondary" style="border:1.5px solid var(--border);border-left:none"
+                        (click)="verConfirmar = !verConfirmar">
+                  <i class="bi" [ngClass]="verConfirmar ? 'bi-eye-slash' : 'bi-eye'" style="font-size:.85rem"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="f['confirmar'].touched && form.errors?.['noCoinciden']">Las contraseñas no coinciden.</div>
+            </div>
+
+            <button type="submit" class="btn btn-green-sh w-100 py-2">Crear cuenta</button>
+          </form>
+
+          <div class="text-center mt-4" style="font-size:.875rem">
+            <span class="text-muted">¿Ya tienes cuenta?</span>
+            <a routerLink="/login" style="color:var(--green);font-weight:600;margin-left:.35rem">Inicia sesión</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

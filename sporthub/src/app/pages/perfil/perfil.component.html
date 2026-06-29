@@ -1,0 +1,124 @@
+<div class="profile-header">
+  <div class="container">
+    <div class="d-flex align-items-center gap-4 flex-wrap">
+      <div class="profile-avatar"><i class="bi bi-person-fill" style="font-size:2rem"></i></div>
+      <div>
+        <h1 class="fw-bold text-white mb-0" style="font-size:1.5rem">{{ usuario.nombre }}</h1>
+        <p class="mb-1 mt-1" style="color:rgba(255,255,255,.5);font-size:.875rem">{{ usuario.correo }}</p>
+        <span class="badge" [ngClass]="esAdmin ? 'bg-warning text-dark' : 'bg-success'">
+          {{ esAdmin ? 'Administrador' : 'Cliente' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="py-section">
+  <div class="container">
+    <div class="row g-4 justify-content-center">
+
+      <!-- Lateral -->
+      <div class="col-lg-3 order-lg-2">
+        <div class="card-sh p-4 mb-3" *ngIf="!esAdmin">
+          <div class="fw-bold mb-3" style="font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)">Actividad</div>
+          <div class="d-flex flex-column gap-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <span style="font-size:.875rem;color:var(--text-muted)">Reservas</span>
+              <span class="fw-bold">{{ stats.reservas }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span style="font-size:.875rem;color:var(--text-muted)">Confirmadas</span>
+              <span class="fw-bold" style="color:var(--green)">{{ stats.confirmadas }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span style="font-size:.875rem;color:var(--text-muted)">Total gastado</span>
+              <span class="fw-bold" style="font-size:.875rem">{{ stats.gasto | precioClp }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-sh p-4">
+          <div class="fw-bold mb-3" style="font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:var(--text-muted)">
+            {{ esAdmin ? 'Panel Admin' : 'Accesos rápidos' }}
+          </div>
+          <div class="d-grid gap-2">
+            <ng-container *ngIf="esAdmin; else accesosCliente">
+              <a routerLink="/admin" class="btn btn-dark-sh" style="font-size:.875rem">Dashboard</a>
+              <a routerLink="/admin/canchas" class="btn btn-outline-sh" style="font-size:.875rem">Canchas</a>
+              <a routerLink="/admin/usuarios" class="btn btn-outline-sh" style="font-size:.875rem">Usuarios</a>
+            </ng-container>
+            <ng-template #accesosCliente>
+              <a routerLink="/canchas" class="btn btn-green-sh" style="font-size:.875rem">Ver canchas</a>
+              <a routerLink="/mis-reservas" class="btn btn-outline-sh" style="font-size:.875rem">Mis reservas</a>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="col-lg-9 order-lg-1">
+        <div class="card-sh p-4 mb-4">
+          <h5 class="fw-bold mb-4" style="font-size:.95rem">Datos personales</h5>
+
+          <div *ngIf="alerta" class="alert mb-3" [ngClass]="'alert-' + alerta.tipo">
+            <i class="bi me-2" [ngClass]="alerta.tipo === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-circle'"></i>{{ alerta.texto }}
+          </div>
+
+          <form [formGroup]="form" (ngSubmit)="guardar()" novalidate>
+            <div class="row g-3 mb-4">
+              <div class="col-12">
+                <label class="form-label" for="nombre">Nombre completo <span class="text-danger">*</span></label>
+                <input type="text" id="nombre" class="form-control" formControlName="nombre"
+                       [class.is-invalid]="f['nombre'].touched && f['nombre'].invalid">
+                <div class="invalid-feedback" *ngIf="f['nombre'].touched && f['nombre'].invalid">Nombre obligatorio (mín. 3).</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="correo">Correo electrónico <span class="text-danger">*</span></label>
+                <input type="email" id="correo" class="form-control" formControlName="correo"
+                       [class.is-invalid]="f['correo'].touched && f['correo'].invalid">
+                <div class="invalid-feedback" *ngIf="f['correo'].touched && f['correo'].invalid">Correo inválido.</div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="telefono">Teléfono <span class="text-danger">*</span></label>
+                <input type="tel" id="telefono" class="form-control" formControlName="telefono"
+                       [class.is-invalid]="f['telefono'].touched && f['telefono'].invalid">
+                <div class="invalid-feedback" *ngIf="f['telefono'].touched && f['telefono'].invalid">Teléfono inválido (8-12 dígitos).</div>
+              </div>
+            </div>
+
+            <div class="mb-3 pb-3" style="border-top:1px solid var(--border);padding-top:1.25rem">
+              <h5 class="fw-bold mb-1" style="font-size:.95rem">Cambiar contraseña</h5>
+              <p class="text-muted mb-3" style="font-size:.82rem">Déjalo vacío si no deseas cambiarla.</p>
+              <div class="row g-3">
+                <div class="col-12 col-md-4">
+                  <label class="form-label" for="pwActual">Contraseña actual</label>
+                  <input type="password" id="pwActual" class="form-control" formControlName="pwActual" placeholder="Contraseña actual">
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="form-label" for="pwNueva">Nueva contraseña</label>
+                  <input type="password" id="pwNueva" class="form-control" formControlName="pwNueva" placeholder="Nueva contraseña"
+                         [class.is-invalid]="f['pwNueva'].touched && f['pwNueva'].invalid">
+                  <div class="invalid-feedback" *ngIf="f['pwNueva'].touched && f['pwNueva'].errors?.['passwordSeguro']">
+                    Faltan: {{ f['pwNueva'].errors?.['passwordSeguro'].errores.join(' · ') }}
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <label class="form-label" for="pwConfirmar">Confirmar contraseña</label>
+                  <input type="password" id="pwConfirmar" class="form-control" formControlName="pwConfirmar" placeholder="Repite la nueva"
+                         [class.is-invalid]="f['pwConfirmar'].touched && form.errors?.['noCoinciden']">
+                  <div class="invalid-feedback" *ngIf="f['pwConfirmar'].touched && form.errors?.['noCoinciden']">No coinciden.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button type="submit" class="btn btn-dark-sh px-4">Guardar cambios</button>
+              <a routerLink="/" class="btn btn-outline-sh">Cancelar</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

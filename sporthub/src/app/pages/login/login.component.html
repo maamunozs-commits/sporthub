@@ -1,0 +1,81 @@
+<div class="auth-bg">
+  <div class="container d-flex align-items-center justify-content-center py-5" style="position:relative;z-index:1">
+    <div class="row w-100 justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4">
+
+        <div class="text-center mb-4">
+          <a routerLink="/" class="text-decoration-none">
+            <div class="auth-logo-text text-white">
+              <span class="auth-logo-icon"><i class="bi bi-trophy-fill"></i></span>SportHub
+            </div>
+          </a>
+        </div>
+
+        <div class="auth-panel">
+          <div class="mb-4">
+            <h1 class="fw-bold mb-1" style="font-size:1.4rem">Iniciar sesión</h1>
+            <p class="text-muted mb-0" style="font-size:.875rem">Ingresa tus credenciales para continuar</p>
+          </div>
+
+          <div *ngIf="alerta" class="alert mb-4" [ngClass]="'alert-' + alerta.tipo">
+            <i class="bi me-2" [ngClass]="alerta.tipo === 'success' ? 'bi-check-circle' : 'bi-x-circle'"></i>
+            <span [innerHTML]="alerta.texto"></span>
+          </div>
+
+          <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+            <div class="mb-3">
+              <label class="form-label" for="correo">Correo electrónico</label>
+              <input type="email" id="correo" class="form-control" formControlName="correo"
+                     [class.is-invalid]="f['correo'].touched && f['correo'].invalid"
+                     placeholder="tu@correo.com" appAutofocus>
+              <div class="invalid-feedback" *ngIf="f['correo'].touched && f['correo'].errors?.['required']">El correo es obligatorio.</div>
+              <div class="invalid-feedback" *ngIf="f['correo'].touched && f['correo'].errors?.['email']">Ingresa un correo con formato válido.</div>
+            </div>
+
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label class="form-label mb-0" for="password">Contraseña</label>
+                <a routerLink="/recuperar" style="font-size:.8rem;color:var(--green)">¿Olvidaste tu contraseña?</a>
+              </div>
+              <div class="input-group">
+                <input [type]="verPassword ? 'text' : 'password'" id="password" class="form-control"
+                       formControlName="password"
+                       [class.is-invalid]="f['password'].touched && f['password'].invalid"
+                       placeholder="••••••••">
+                <button type="button" class="btn btn-outline-secondary" style="border:1.5px solid var(--border);border-left:none"
+                        (click)="verPassword = !verPassword">
+                  <i class="bi" [ngClass]="verPassword ? 'bi-eye-slash' : 'bi-eye'" style="font-size:.85rem"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="f['password'].touched && f['password'].errors?.['required']">La contraseña es obligatoria.</div>
+            </div>
+
+            <button type="submit" class="btn btn-dark-sh w-100 py-2">Iniciar sesión</button>
+          </form>
+
+          <div class="text-center mt-4" style="font-size:.875rem">
+            <span class="text-muted">¿No tienes cuenta?</span>
+            <a routerLink="/registro" style="color:var(--green);font-weight:600;margin-left:.35rem">Regístrate gratis</a>
+          </div>
+        </div>
+
+        <div class="mt-3 p-3 rounded-3" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)">
+          <p class="mb-2" style="font-size:.75rem;font-weight:600;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em">Cuentas de demostración</p>
+          <div class="row g-2">
+            <div class="col-6">
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5)">Admin</div>
+              <div style="font-size:.8rem;color:rgba(255,255,255,.8);font-weight:500">admin&#64;sporthub.cl</div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5)">Admin123!</div>
+            </div>
+            <div class="col-6">
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5)">Cliente</div>
+              <div style="font-size:.8rem;color:rgba(255,255,255,.8);font-weight:500">cliente&#64;sporthub.cl</div>
+              <div style="font-size:.78rem;color:rgba(255,255,255,.5)">Cliente123!</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
